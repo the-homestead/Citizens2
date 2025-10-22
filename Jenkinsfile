@@ -191,6 +191,7 @@ pipeline {
         
         cleanup {
             // Clean up workspace if needed (commented out to preserve artifacts for debugging)
+            echo 'Build cleanup completed'
             // deleteDir()
         }
     }
