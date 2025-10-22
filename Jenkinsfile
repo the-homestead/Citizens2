@@ -61,9 +61,9 @@ pipeline {
         
         stage('Compile') {
             steps {
-                echo 'Compiling Citizens2 project...'
-                // Use spigot-release profile which includes 1.21 modules
-                bat 'mvn compile -P spigot-release'
+                echo 'Compiling Citizens2 project for Minecraft 1.21.1...'
+                // Use dev profile which focuses on latest version (1.21.6 - compatible with 1.21.1)
+                bat 'mvn compile -P dev'
             }
         }
         
@@ -72,7 +72,7 @@ pipeline {
                 echo 'Running Citizens2 tests...'
                 script {
                     try {
-                        bat 'mvn test -P spigot-release'
+                        bat 'mvn test -P dev'
                     } catch (Exception e) {
                         echo 'Tests failed, but continuing build...'
                         currentBuild.result = 'UNSTABLE'
@@ -94,8 +94,8 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Packaging Citizens2 for Minecraft 1.21.1...'
-                // Build with spigot-release profile to include 1.21 support
-                bat 'mvn package -P spigot-release -DskipTests -DBUILD_NUMBER=%BUILD_NUMBER%'
+                // Build with dev profile for focused 1.21 support
+                bat 'mvn package -P dev -DskipTests -DBUILD_NUMBER=%BUILD_NUMBER%'
             }
         }
         
@@ -125,7 +125,7 @@ pipeline {
             }
             steps {
                 echo 'Installing Citizens2 to local repository...'
-                bat 'mvn install -P spigot-release -DskipTests -DBUILD_NUMBER=%BUILD_NUMBER%'
+                bat 'mvn install -P dev -DskipTests -DBUILD_NUMBER=%BUILD_NUMBER%'
             }
         }
     }
